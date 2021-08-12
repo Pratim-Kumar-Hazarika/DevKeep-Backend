@@ -7,6 +7,7 @@ const UserArchiveNotesController = require("../controllers/archive.notes.control
 const UserTrashNotesController = require("../controllers/trash.controller")
 const ColorController = require("../controllers/color.controller")
 const TitleController = require("../controllers/allnotes.title.controller")
+const DescriptionController = require("../controllers/allnotes.description.controller")
 const LabelController = require("../controllers/label.controller")
 const {userLogger} = require("../middlewares/authHandler");
 const { ArchiveNote } = require('../models/archive.notes.model');
@@ -63,6 +64,9 @@ router.route("/notes/label/delete")
 router.route("/notes/title")
 .post(TitleController.update_notes_title) // update title
 
+router.route("/notes/description")
+.post(DescriptionController.update_notes_description) // update description
+
 
 
 //PINNED NOTES
@@ -91,6 +95,9 @@ router.route("/pinnedNote/label/delete")
 router.route("/pinnedNote/title")
 .post(TitleController.update_pinned_notes_title) // update title
 
+router.route("/pinnedNote/description")
+.post(DescriptionController.update_pinned_notes_description) // update description
+
 
 ///ARCHIVE NOTES
 router.route("/archiveNote")
@@ -117,6 +124,9 @@ router.route("/archiveNote/label/delete")
 
 router.route("/archiveNote/title")
 .post(TitleController.update_archive_notes_title) // update title
+
+router.route("/archiveNote/description")
+.post(DescriptionController.update_archive_notes_description) // update description
 
 
 
