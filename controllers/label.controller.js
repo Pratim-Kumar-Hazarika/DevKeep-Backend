@@ -78,6 +78,24 @@ exports.edit_label  = async (req, res) => {
           {"labels":
               {"_id":req.body.labelId}
           }})
+          await Note.updateMany({ "_id":  decodedValues.userId}, {
+            "$pull": {
+              "notes.$[].label":   {"_id":req.body.labelId}
+            }},
+            {   multi: true} 
+          );
+          await PinnedNote.updateMany({ "_id":  decodedValues.userId}, {
+            "$pull": {
+              "pinnedNotes.$[].label":   {"_id":req.body.labelId}
+            }},
+            {   multi: true} 
+          );
+          await ArchiveNote.updateMany({ "_id":  decodedValues.userId}, {
+            "$pull": {
+              "archiveNotes.$[].label":   {"_id":req.body.labelId}
+            }},
+            {   multi: true} 
+          );
           res.json({message:"Label deleted successfully"})
       } catch (error) {
           res.status(500).json({errorMessage:"Label not deleted"})
