@@ -1,5 +1,8 @@
+const { ArchiveNote } = require("../models/archive.notes.model")
 const { Label } = require("../models/label.model")
 const { Note } = require("../models/notes.model")
+const { PinnedNote } = require("../models/pinned.notes.model")
+const { Trash } = require("../models/trash.model")
 
 exports.get_all_labels = async(req,res)=>{
     try {
@@ -41,13 +44,26 @@ exports.edit_label  = async (req, res) => {
         "$set": {
           "labels.$.labelName": req.body.newLabel,
         }
-      }, { upsert: true })
+      }, { upsert: true });
       await Note.updateMany({ "_id":  decodedValues.userId}, {
         "$set": {
           "notes.$[].label.$[elem].labelName":req.body.newLabel
         }},
         { "arrayFilters": [ { "elem._id": req.body.labelId } ] , multi: true} 
-      )
+      );
+      await PinnedNote.updateMany({ "_id":  decodedValues.userId}, {
+        "$set": {
+          "pinnedNotes.$[].label.$[elem].labelName":req.body.newLabel
+        }},
+        { "arrayFilters": [ { "elem._id": req.body.labelId } ] , multi: true} 
+      );
+      await ArchiveNote.updateMany({ "_id":  decodedValues.userId}, {
+        "$set": {
+          "archiveNotes.$[].label.$[elem].labelName":req.body.newLabel
+        }},
+        { "arrayFilters": [ { "elem._id": req.body.labelId } ] , multi: true} 
+      );
+
       res.json({ success: true, message: "Label updated sucessfully" })
     } catch{
       res.status(500).json({ success: false, message: "Error while updating the label " })

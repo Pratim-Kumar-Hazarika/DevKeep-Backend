@@ -30,7 +30,7 @@ router.route("/labels")
 .post(LabelController.add_new_label) // add labels
 
 router.route("/labels/edit")
-.post(LabelController.edit_label )// Left -> edit lables from all notes also
+.post(LabelController.edit_label )// done :edit lables from all notes
 
 router.route("/labels/delete")
 .post(LabelController.delete_label) // Left -> delete lables from all notes also
