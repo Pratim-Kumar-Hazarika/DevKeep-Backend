@@ -8,7 +8,7 @@ const imageSchema = new Schema({
 
  const labelSchema = new Schema({
     labelName:String,
-    _id :{ type: mongoose.Schema.Types.ObjectId, auto: true },
+    _id :{ type: mongoose.Schema.Types.ObjectId },
 })
 
  const noteSchema = new Schema({
