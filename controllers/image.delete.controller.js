@@ -17,7 +17,7 @@ exports.delete_image_from_notes = async (req, res) => {
     }
   }
 
-  exports.add_image_to_pinned_notes = async (req, res) => {
+  exports.delete_image_from_pinned_note = async (req, res) => {
     try {
         const {decodedValues} = req.user
         await PinnedNote.updateOne({ "_id": decodedValues.userId, "pinnedNotes._id": req.body.noteId }, {
@@ -31,13 +31,9 @@ exports.delete_image_from_notes = async (req, res) => {
     }
   }
 
-  exports.add_image_to_archive_note = async (req, res) => {
+  exports.delete_image_from_archive_note = async (req, res) => {
     try {
         const {decodedValues} = req.user;
-         const image = req.body.image;
-        const uplodedResponse = await cloudinary.uploader.upload(image,{
-          upload_preset:"dev_setups"
-        })
         await ArchiveNote.updateOne({ "_id": decodedValues.userId, "archiveNotes._id": req.body.noteId }, {
         "$pull": {
           "archiveNotes.$.images": {"_id":req.body.imageId},
