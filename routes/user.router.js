@@ -10,6 +10,7 @@ const TitleController = require("../controllers/allnotes.title.controller")
 const DescriptionController = require("../controllers/allnotes.description.controller")
 const LabelController = require("../controllers/label.controller")
 const ImageController = require("../controllers/image.controller")
+const ImageDeleteController = require("../controllers/image.delete.controller")
 const {userLogger} = require("../middlewares/authHandler");
 const { ArchiveNote } = require('../models/archive.notes.model');
 const { Note } = require('../models/notes.model');
@@ -74,6 +75,9 @@ router.route("/notes/description")
 router.route("/notes/image")
 .post(ImageController.add_image_to_notes) // uplod image
 
+router.route("/notes/image/delete")
+.post(ImageDeleteController.delete_image_from_notes) // delete image
+
 
 //PINNED NOTES
 router.route("/pinnedNote")
@@ -111,6 +115,11 @@ router.route("/pinnedNote/description")
 router.route("/pinnedNote/image")
 .post(ImageController.add_image_to_pinned_notes) // uplod image
 
+router.route("/pinnedNote/image/delete")
+.post(ImageDeleteController.delete_image_from_pinned_note) // delete image
+
+
+
 
 ///ARCHIVE NOTES
 router.route("/archiveNote")
@@ -147,6 +156,8 @@ router.route("/archiveNote/description")
 router.route("/archiveNote/image")
 .post(ImageController.add_image_to_archive_note) // uplod image
 
+router.route("/archiveNote/image/delete")
+.post(ImageDeleteController.delete_image_from_archive_note) // delete image
 
 
 
