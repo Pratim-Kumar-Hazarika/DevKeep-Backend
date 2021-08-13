@@ -42,7 +42,10 @@ router.route("/labels/delete")
 //NOTES
 router.route("/notes")
 .get(UserNotesController.get_user_note) // get all notes
-.post(UserNotesController.add_note_from_input) // from input
+.post(UserNotesController.add_note_with_image_from_input) // from input +image
+
+router.route("/notes/onlytext")
+.post(UserNotesController.add_note_from_input) // from input only text
 
 router.route("/notes/pinned")
 .post(UserNotesController.add_note_to_pinnedNotes) // pin note
@@ -75,7 +78,10 @@ router.route("/notes/image")
 //PINNED NOTES
 router.route("/pinnedNote")
 .get(UserPinnedNotesController.get_pinned_notes) // get all pinned notes
-.post(UserPinnedNotesController.add_to_pinned_note_from_input) //from input
+.post(UserPinnedNotesController.add_to_pinned_note_from_input_with_image) //from input text+image
+
+router.route("/pinnedNote/onlytext")
+.post(UserPinnedNotesController.add_note_to_pinned_from_input) // from input only text
 
 router.route("/pinnedNote/note")
 .post(UserPinnedNotesController.add_pinnedNote_to_note) //unpin note
@@ -109,7 +115,10 @@ router.route("/pinnedNote/image")
 ///ARCHIVE NOTES
 router.route("/archiveNote")
 .get(UserArchiveNotesController.get_archive_note) // get all archive notes
-.post(UserArchiveNotesController.add_to_archive_note_from_input); // from input
+.post(UserArchiveNotesController.add_to_archive_note_from_input_with_image); // from input + image
+
+router.route("/archiveNote/onlytext")
+.post(UserArchiveNotesController.add_note_to_archive_from_input) // from input only text
 
 router.route("/archiveNote/pinned")
 .post(UserArchiveNotesController.pin_archive_note) // pin archived note
