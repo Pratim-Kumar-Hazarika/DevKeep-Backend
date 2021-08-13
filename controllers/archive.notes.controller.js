@@ -2,7 +2,7 @@ const { ArchiveNote } = require("../models/archive.notes.model");
 const { Note } = require("../models/notes.model");
 const { PinnedNote } = require("../models/pinned.notes.model");
 const { Trash } = require("../models/trash.model");
-
+const { cloudinary} = require("../cloudinary/cloudinary");
 exports.get_archive_note = async(req,res)=>{
     try {
         const {decodedValues} = req.user
@@ -13,21 +13,28 @@ exports.get_archive_note = async(req,res)=>{
     }
 }
 
-exports.add_to_archive_note_from_input = async(req,res)=>{
+exports.add_to_archive_note_from_input_with_image = async(req,res)=>{
     try {
         const {decodedValues} = req.user;
+        const image = req.body.imageUrl;
+        const uplodedResponse = await cloudinary.uploader.upload(image,{
+          upload_preset:"dev_setups"
+        })
         const getUserNotes = await ArchiveNote.findById(decodedValues.userId)
         if(getUserNotes === null){
             const AddNewNote = new ArchiveNote({
               _id : decodedValues.userId,
-              archiveNotes:[req.body]
+              archiveNotes:[{
+                ...req.body,
+                images:[{...req.body.images,imageUrl:uplodedResponse.secure_url}]
+              }]
             })
             await AddNewNote.save()
             return res.json({success:true,message:"ArchiveNote added sucessfully"})
           }
           await ArchiveNote.updateOne({"_id":decodedValues.userId},{
             "$addToSet":{
-              "archiveNotes":req.body
+              "archiveNotes":{...req.body,images:[{...req.body.images,imageUrl:uplodedResponse.secure_url}]}
             }
           })
           return res.json({success:true,message:"ArchiveNote Added Successfully"})
@@ -36,6 +43,32 @@ exports.add_to_archive_note_from_input = async(req,res)=>{
     }
 }
 
+
+exports.add_note_to_archive_from_input = async(req,res)=>{
+  try {
+      const {decodedValues} = req.user;
+      const getUserNotes = await ArchiveNote.findById(decodedValues.userId)
+      if(getUserNotes === null){
+          const AddNewNote = new ArchiveNote({
+            _id : decodedValues.userId,
+            archiveNotes:[{
+              ...req.body,
+              images:[]
+            }]
+          })
+          await AddNewNote.save()
+          return res.json({success:true,message:"ArchiveNote added sucessfully"})
+        }
+        await ArchiveNote.updateOne({"_id":decodedValues.userId},{
+          "$addToSet":{
+            "archiveNotes":{...req.body,images:[]}
+          }
+        })
+        return res.json({success:true,message:"ArchiveNote Added Successfully"})
+  } catch (error) {
+      res.status(500).json({errorMessage:"error occured while adding the note"})
+  }
+}
 exports.pin_archive_note = async(req,res)=>{
   try {
     const {decodedValues} = req.user;
