@@ -2,7 +2,7 @@ const { ArchiveNote } = require("../models/archive.notes.model");
 const { Note } = require("../models/notes.model");
 const { PinnedNote } = require("../models/pinned.notes.model");
 const { Trash } = require("../models/trash.model");
-
+const { cloudinary} = require("../cloudinary/cloudinary");
 exports.get_pinned_notes = async(req,res)=>{
     try {
         const {decodedValues} = req.user
@@ -13,21 +13,28 @@ exports.get_pinned_notes = async(req,res)=>{
     }
 }
 
-exports.add_to_pinned_note_from_input = async(req,res)=>{
+exports.add_to_pinned_note_from_input_with_image = async(req,res)=>{
     try {
         const {decodedValues} = req.user;
+        const image = req.body.imageUrl;
+        const uplodedResponse = await cloudinary.uploader.upload(image,{
+          upload_preset:"dev_setups"
+        })
         const getUserNotes = await PinnedNote.findById(decodedValues.userId)
         if(getUserNotes === null){
             const AddNewNote = new PinnedNote({
               _id : decodedValues.userId,
-              pinnedNotes:[req.body]
+              pinnedNotes:[{
+                ...req.body,
+                images:[{...req.body.images,imageUrl:uplodedResponse.secure_url}]
+              }]
             })
             await AddNewNote.save()
             return res.json({success:true,message:"PinnedNote added sucessfully"})
           }
           await PinnedNote.updateOne({"_id":decodedValues.userId},{
             "$addToSet":{
-              "pinnedNotes":req.body
+              "pinnedNotes":{...req.body,images:[{...req.body.images,imageUrl:uplodedResponse.secure_url}]}
             }
           })
           return res.json({success:true,message:"PinnedNote Added Successfully"})
@@ -35,6 +42,32 @@ exports.add_to_pinned_note_from_input = async(req,res)=>{
         res.status(500).json({errorMessage:"error occured while adding the note"})
     }
 }
+exports.add_note_to_pinned_from_input = async(req,res)=>{
+  try {
+      const {decodedValues} = req.user;
+      const getUserNotes = await PinnedNote.findById(decodedValues.userId)
+      if(getUserNotes === null){
+          const AddNewNote = new PinnedNote({
+            _id : decodedValues.userId,
+            pinnedNotes:[{
+              ...req.body,
+              images:[]
+            }]
+          })
+          await AddNewNote.save()
+          return res.json({success:true,message:"PinnedNote added sucessfully"})
+        }
+        await PinnedNote.updateOne({"_id":decodedValues.userId},{
+          "$addToSet":{
+            "pinnedNotes":{...req.body,images:[]}
+          }
+        })
+        return res.json({success:true,message:"PinnedNote Added Successfully"})
+  } catch (error) {
+      res.status(500).json({errorMessage:"error occured while adding the note"})
+  }
+}
+
 exports.add_pinnedNote_to_note = async(req,res)=>{
   try {
     const {decodedValues} = req.user;
