@@ -9,6 +9,7 @@ const ColorController = require("../controllers/color.controller")
 const TitleController = require("../controllers/allnotes.title.controller")
 const DescriptionController = require("../controllers/allnotes.description.controller")
 const LabelController = require("../controllers/label.controller")
+const ImageController = require("../controllers/image.controller")
 const {userLogger} = require("../middlewares/authHandler");
 const { ArchiveNote } = require('../models/archive.notes.model');
 const { Note } = require('../models/notes.model');
@@ -67,6 +68,8 @@ router.route("/notes/title")
 router.route("/notes/description")
 .post(DescriptionController.update_notes_description) // update description
 
+router.route("/notes/image")
+.post(ImageController.add_image_to_notes) // uplod image
 
 
 //PINNED NOTES
@@ -99,6 +102,10 @@ router.route("/pinnedNote/description")
 .post(DescriptionController.update_pinned_notes_description) // update description
 
 
+router.route("/pinnedNote/image")
+.post(ImageController.add_image_to_pinned_notes) // uplod image
+
+
 ///ARCHIVE NOTES
 router.route("/archiveNote")
 .get(UserArchiveNotesController.get_archive_note) // get all archive notes
@@ -127,6 +134,10 @@ router.route("/archiveNote/title")
 
 router.route("/archiveNote/description")
 .post(DescriptionController.update_archive_notes_description) // update description
+
+router.route("/archiveNote/image")
+.post(ImageController.add_image_to_archive_note) // uplod image
+
 
 
 
