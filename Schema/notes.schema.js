@@ -1,14 +1,13 @@
 const mongoose = require("mongoose");
 const {Schema} = mongoose;
 
-const imageSchema = new Schema({
-    image:String,
-    _id :{ type: mongoose.Schema.Types.ObjectId, auto: true },
-})
-
  const labelSchema = new Schema({
     labelName:String,
     _id :{ type: mongoose.Schema.Types.ObjectId },
+})
+const imageSchema = new Schema({
+    imageUrl:String,
+    _id :{ type: mongoose.Schema.Types.ObjectId, auto: true },
 })
 
  const noteSchema = new Schema({
