@@ -17,7 +17,7 @@ app.use(cors())
 initializeDbConnection()
 
 app.get('/', (req, res) => {
-  res.send('DevKeep server running..')
+  res.json('DevKeep server running..')
 });
 
 app.use("/user",userRouter)
