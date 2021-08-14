@@ -16,9 +16,8 @@
     7.Label Management for each notes (Every type : Normal,Archive,Pinned)
     8.Background color management of each note (Everytype : Normal,Archive,Pinned)
     9.Title & Description management of each note (Everytype : Normal,Archive,Pinned)
+    10.Image management for each note
 
-### Functionalities left
-    1.Image management for each note
-
+_Frontend_Code : https://github.com/Pratim-Kumar-Hazarika/Dev-keep
 
 ⭐ - Star, if you like it.
