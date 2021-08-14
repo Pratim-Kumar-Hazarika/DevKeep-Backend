@@ -1,7 +1,7 @@
 require('dotenv').config()
 const express = require('express')
 const app = express();
-const port = process.env.PORT;
+const port = 3000
 const cors = require("cors")
 const bodyParser = require('body-parser');
 const { initializeDbConnection} = require("./dbconnection/db.connection.js");
@@ -24,6 +24,6 @@ app.use("/user",userRouter)
 app.use(errorHandler)
 app.use(routeHandler)
 
-app.listen(port, () => {
+app.listen(process.env.PORT || port, () => {
   console.log(`Server started at port ${port}!`)
 });
