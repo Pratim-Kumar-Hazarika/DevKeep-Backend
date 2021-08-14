@@ -17,6 +17,7 @@
     8.Background color management of each note (Everytype : Normal,Archive,Pinned)
     9.Title & Description management of each note (Everytype : Normal,Archive,Pinned)
     10.Image management for each note
+_Live_Link_ :https://dev-devkeep.netlify.app/
 
 _Frontend_Code : https://github.com/Pratim-Kumar-Hazarika/Dev-keep
 
