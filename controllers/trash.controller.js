@@ -1,6 +1,18 @@
 const { Note } = require("../models/notes.model");
 const { Trash } = require("../models/trash.model");
 
+
+
+exports.get_trash_notes = async(req,res)=>{
+  try {
+      const {decodedValues} = req.user
+      const getUserNotes = await Trash.findById(decodedValues.userId)
+      res.json({message:"user trash notes are",getUserNotes})
+  } catch (error) {
+      res.status(500).json({errorMessage:"error occured while getting user trash notes"})
+  }
+}
+
 exports.delete_note_forever = async(req,res)=>{
     const {decodedValues} = req.user;
     try {

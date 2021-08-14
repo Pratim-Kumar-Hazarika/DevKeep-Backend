@@ -162,6 +162,9 @@ router.route("/archiveNote/image/delete")
 
 
 ////TRASH NOTES
+router.route("/trash")
+.get(UserTrashNotesController.get_trash_notes) // get trash notes
+
 router.route("/trash/delete")
 .post(UserTrashNotesController.delete_note_forever) // delete forever
 
