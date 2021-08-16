@@ -9,11 +9,9 @@ const {errorHandler} = require("./middlewares/errorHandler")
 const {routeHandler} = require("./middlewares/routeHandler")
 const userRouter = require("./routes/user.router");
 
+app.use(cors())
 app.use(bodyParser.json()); 
 app.use(bodyParser.urlencoded({extended: true}));
-
-
-app.use(cors())
 initializeDbConnection()
 
 app.get('/', (req, res) => {
